@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Layer Proportional Responsive Parallax Hero</title>
+    <style>
+        /* --- CSS STYLING --- */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b111e; 
+            overflow-x: hidden;
+            font-family: sans-serif;
+            color: #fff;
+        }
+
+        /* Hero Container holding the layers */
+        .parallax-hero {
+            position: relative;
+            width: 100%;
+            height: 100vh; 
+            overflow:visible;
+            background-color: #ffffff;
+        }
+
+        /* Base configuration for all 7 layers */
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;  /* Tall bleed margin for smooth scrolling */
+            background-size: contain;
+            background-position: bottom center;
+            background-repeat: no-repeat;
+            will-change: transform;
+            transform: translateY(calc(var(--scroll, 0) * var(--speed-factor, 0px)));
+        }
+
+        /* --- LAYER IMAGE ASSIGNMENTS --- */
+        .layer-1 { background-image: url('./assests/1.gif'); top: 0px; left: 0;  background-size:contain; } 
+        .layer-2 { background-image: url('./assests/2.png'); top: 30px; left: 0; }
+        .layer-3 { background-image: url('./assests/3.png'); top: 25px; left: 0; }
+        .layer-4 { background-image: url('./assests/4.png'); top: 20px; left: 0; }
+        .layer-5 { background-image: url('./assests/5.png'); top: 15px; left: 0; }
+        .layer-6 { background-image: url('./assests/6.png'); top: 10px; left: 0; }
+        .layer-7 { background-image: url('./assests/7.png'); top: 0px; left: 0; }
+
+        /* Content Sections below the Parallax Hero */
+        .content-section {
+            position: relative;
+            z-index: 20;
+            background-color: #0b111e;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #8fa0ba;
+        }
+
+        /* --- THE FINAL MOBILE ASPECT-RATIO FIX --- */
+        @media (max-width: 768px) {
+            .parallax-hero {
+                /* FIX 1: Set to 56.25vw. This acts like an aspect-ratio padlock for 16:9 images, 
+                   forcing the container box height to size perfectly with the mobile screen width. */
+                height: 280px !important; 
+                width: 100% !important;
+                background-color: #0b111e !important; 
+            }
+
+            .parallax-layer {
+                width: 100% !important;
+                height: 100% !important; 
+                
+                /* FIX 2: Switched to 100% auto. This forces the image width to expand completely 
+                   to both sides of the mobile browser frame, stopping the right-side clipping. */
+                background-size: 100% auto !important; 
+                background-position: center bottom !important; 
+            }
+
+            .layer-1{
+                top: 0px;
+            }
+            .layer-2{
+                top: 0px;
+            }
+            .layer-3{
+                top: 0px;
+            }
+            .layer-4{
+                top: 0px;
+            }
+            .layer-5{
+                top: 0px;
+            }
+            .layer-6{
+                top: 0px;
+            }
+            .layer-7{
+                top: 0px;
+            }
+            
+            .content-section {
+                padding: 40px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parallax-hero">
+        <div class="parallax-layer layer-1" data-speed="0.05"></div>
+        <div class="parallax-layer layer-2" data-speed="0.12"></div>
+        <div class="parallax-layer layer-3" data-speed="0.22"></div>
+        <div class="parallax-layer layer-4" data-speed="0.35"></div>
+        <div class="parallax-layer layer-5" data-speed="0.48"></div>
+        <div class="parallax-layer layer-6" data-speed="0.55"></div>
+        <div class="parallax-layer layer-7" data-speed="0.62"></div>
+    </div>
+
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const layers = document.querySelectorAll(".parallax-layer");
+
+            const handleScroll = () => {
+                const scrolled = window.pageYOffset;
+                const isMobile = window.innerWidth <= 768;
+
+                requestAnimationFrame(() => {
+                    layers.forEach(layer => {
+                        let speed = parseFloat(layer.getAttribute("data-speed"));
+                        
+                        if (isMobile) {
+                            // Scales down scroll speed tracking to match the optimized compact window
+                            speed = speed * 0.15; 
+                        }
+
+                        layer.style.setProperty("--scroll", scrolled);
+                        layer.style.setProperty("--speed-factor", `${speed}px`);
+                    });
+                });
+            };
+
+            window.addEventListener("scroll", handleScroll, { passive: true });
+            window.addEventListener("resize", handleScroll);
+            handleScroll();
+        });
+    </script>
+</body>
+</html>
