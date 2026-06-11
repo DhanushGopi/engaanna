@@ -25,7 +25,7 @@
             position: relative;
             width: 100%;
             height: 100vh; 
-            overflow: visible;
+            overflow: hidden; /* Changed from visible to prevent layout spills on short screens */
             background-color: #ffffff;
         }
 
@@ -38,7 +38,8 @@
             height: 100%;
             background-repeat: no-repeat;
             will-change: transform;
-            transform: translateY(calc(var(--scroll, 0) * var(--speed-factor, 0px)));
+            /* Added an extra CSS variable (--base-offset) to handle dynamic height adjustments dynamically */
+            transform: translateY(calc((var(--scroll, 0) * var(--speed-factor, 0px)) + var(--base-offset, 0px)));
             
             /* Desktop Default Alignment Rules */
             background-size: contain;
@@ -77,11 +78,9 @@
         }
 
         /* ==========================================================================
-           FIXED RESPONSIVE BREAKPOINTS (Mobile Views 320px up to 1080px)
+            FIXED RESPONSIVE BREAKPOINTS (Mobile Views 320px up to 1080px)
            ========================================================================== */
 
-        /* --- GLOBAL MOBILE RESET (Applied universally under 1081px) --- 
-           Locks all layers into identical proportions to match image_c6851c.jpg */
         @media (max-width: 1080px) {
             .parallax-hero {
                 height: 100vh !important;
@@ -91,8 +90,7 @@
             .parallax-layer {
                 top: 0 !important;
                 height: 100% !important;
-                /* Using 'cover' or '100% 100%' with uniform center-bottom anchoring 
-                   guarantees layers scale as an inseparable group */
+                /* Standardized cover sizing to eliminate static position conflicts */
                 background-size: cover !important;
                 background-position: center bottom !important;
             }
@@ -107,62 +105,8 @@
             .layer-7 { background-image: url('./assests/mob7.png'); }
         }
 
-        @media (max-width: 520px) {
-            .parallax-hero {
-                height: 100vh !important; /* Slightly increased to give the building height breathing room */
-                background-color: #ffffff !important; 
-            }
-
-            .parallax-layer {
-                top: -8%;
-                height: 116%;
-            }
-
-            /* --- FIX FOR BACKGROUND TEXT & LOGO LAYER --- */
-            .layer-1 { 
-                background-image: url('./assests/mob1.png'); 
-                /* Using 95% width ensures the text and top logo scale nicely without clipping off-screen */
-                background-size: 100% auto !important; 
-                background-position: center bottom 95% !important; 
-            } 
-
-            /* --- FIX FOR THE BUILDING BACKGROUND --- */
-            .layer-2 { 
-                background-image: url('./assests/mob2.png'); 
-                /* Contain keeps the architectural sketch fully visible inside the frame */
-                background-size: 100% !important; 
-                background-position: center bottom 100% !important; 
-            }
-
-            /* --- CHARACTER LAYERS (STAY EXTENDED TO EDGES) --- */
-            .layer-3 { background-image: url('./assests/mob3.png'); background-size: 100% !important; background-position: center bottom 80% !important; }
-            .layer-4 { background-image: url('./assests/mob4.png'); background-size: 100% !important; background-position: center bottom 50% !important; }
-            .layer-5 { background-image: url('./assests/mob5.png'); background-size: 100% !important; background-position: center bottom 30% !important; }
-            .layer-6 { background-image: url('./assests/mob6.png'); background-size: 100% !important; background-position: center bottom 10% !important; }
-            .layer-7 { background-image: url('./assests/mob7.png'); background-size: 100% !important; background-position: center bottom 0% !important; }
-        }
-
-        /* Content Sections */
-        .content-section {
-            position: relative;
-            z-index: 20;
-            background-color: #0b111e;
-            padding: 120px 20px;
-            text-align: center;
-        }
-
-        .content-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .content-section p {
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #8fa0ba;
-        }
+        /* Notice: The old @media (max-width: 520px) which had hardcoded percentages has been completely 
+           removed because the positioning calculations are now entirely dynamically managed via JS. */
 
         @media (max-width: 768px) {
             .content-section { padding: 60px 20px; }
@@ -173,13 +117,13 @@
 <body>
 
     <div class="parallax-hero">
-        <div class="parallax-layer layer-1" data-speed="0.05"></div>
-        <div class="parallax-layer layer-2" data-speed="0.12"></div>
-        <div class="parallax-layer layer-3" data-speed="0.22"></div>
-        <div class="parallax-layer layer-4" data-speed="0.35"></div>
-        <div class="parallax-layer layer-5" data-speed="0.48"></div>
-        <div class="parallax-layer layer-6" data-speed="0.55"></div>
-        <div class="parallax-layer layer-7" data-speed="0.62"></div>
+        <div class="parallax-layer layer-1" data-speed="0.05" data-mobile-bias="-0.20"></div>
+        <div class="parallax-layer layer-2" data-speed="0.12" data-mobile-bias="-0.15"></div>
+        <div class="parallax-layer layer-3" data-speed="0.22" data-mobile-bias="-0.10"></div>
+        <div class="parallax-layer layer-4" data-speed="0.35" data-mobile-bias="-0.06"></div>
+        <div class="parallax-layer layer-5" data-speed="0.48" data-mobile-bias="-0.03"></div>
+        <div class="parallax-layer layer-6" data-speed="0.55" data-mobile-bias="-0.01"></div>
+        <div class="parallax-layer layer-7" data-speed="0.62" data-mobile-bias="0.00"></div>
     </div>
 
     <div class="content-section">
@@ -197,25 +141,38 @@
 
             const handleScroll = () => {
                 const scrolled = window.pageYOffset;
-                const isMobileView = window.innerWidth <= 1080;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const isMobileView = windowWidth <= 1080;
 
                 requestAnimationFrame(() => {
                     layers.forEach(layer => {
                         let speed = parseFloat(layer.getAttribute("data-speed"));
-                        
+                        let baseOffset = 0;
+
                         if (isMobileView) {
-                            speed = speed * 0.15; // Retain uniform speed compression across mobile views
+                            speed = speed * 0.15; // Maintain your compressed mobile parallax scale
+
+                            // Fallback read for customized depth biases per layer
+                            const bias = parseFloat(layer.getAttribute("data-mobile-bias")) || 0;
+                            
+                            /* DYNAMIC CALCULATION: 
+                              Instead of using CSS percentages, we factor in the live device height.
+                              This keeps layers spaced beautifully whether on a stubby iPhone SE or a tall modern device.
+                            */
+                            baseOffset = windowHeight * bias;
                         }
 
                         layer.style.setProperty("--scroll", scrolled);
                         layer.style.setProperty("--speed-factor", `${speed}px`);
+                        layer.style.setProperty("--base-offset", `${baseOffset}px`);
                     });
                 });
             };
 
             window.addEventListener("scroll", handleScroll, { passive: true });
             window.addEventListener("resize", handleScroll);
-            handleScroll();
+            handleScroll(); // Initial run to position elements instantly
         });
     </script>
 </body>
