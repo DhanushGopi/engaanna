@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7-Layer Pure Image Parallax Hero</title>
+    <title>7-Layer Proportional Responsive Parallax Hero</title>
     <style>
         /* --- CSS STYLING --- */
         
@@ -14,8 +14,6 @@
         }
 
         body {
-            /* Match this background color to the bottom edge color of Layer 7 
-               to ensure a seamless transition into the webpage content */
             background-color: #0b111e; 
             overflow-x: hidden;
             font-family: sans-serif;
@@ -26,8 +24,9 @@
         .parallax-hero {
             position: relative;
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            height: 100vh; 
+            overflow: visible;
+            background-color: #ffffff;
         }
 
         /* Base configuration for all 7 layers */
@@ -36,39 +35,30 @@
             top: 0;
             left: 0;
             width: 100%;
-            /* 130% height gives the faster-moving foreground layers enough 
-               "bleed" room so they don't reveal blank gaps at the bottom */
-            height: 110%; 
-            background-size: cover;
-            background-position: bottom center;
+            height: 100%;
             background-repeat: no-repeat;
             will-change: transform;
-            /* Hardware-accelerated 3D transform driven by JS Custom Properties */
             transform: translateY(calc(var(--scroll, 0) * var(--speed-factor, 0px)));
+            
+            /* Desktop Default Alignment Rules */
+            background-size: contain;
+            background-position: bottom center;
         }
 
-        /* --- LAYER IMAGE ASSIGNMENTS --- 
-           Replace the placeholder image URLs below with your own assets.
-           Layers 2 through 7 MUST be transparent PNGs or WebPs. */
-           
-        /* Layer 1: Background/Sky (Farthest back) */
-        .layer-1 { background-image: url('./assests/1.png'); height: 120%; } 
-        
-        /* Midground Layers */
-        .layer-2 { background-image: url('./assests/2.png'); height: 120%; }
-        .layer-3 { background-image: url('./assests/3.png'); }
-        .layer-4 { background-image: url('./assests/4.png'); }
-        .layer-5 { background-image: url('./assests/5.png'); }
-        .layer-6 { background-image: url('./assests/6.png'); }
-        
-        /* Layer 7: Foreground (Closest to screen) */
-        .layer-7 { background-image: url('./assests/7.png'); }
+        /* --- LAYER IMAGE ASSIGNMENTS (DESKTOP DEFAULT) --- */
+        .layer-1 { background-image: url('./assests/1.gif'); top: 0px; left: 0; } 
+        .layer-2 { background-image: url('./assests/2.png'); top: 30px; left: 0; }
+        .layer-3 { background-image: url('./assests/3.png'); top: 25px; left: 0; }
+        .layer-4 { background-image: url('./assests/4.png'); top: 20px; left: 0; }
+        .layer-5 { background-image: url('./assests/5.png'); top: 15px; left: 0; }
+        .layer-6 { background-image: url('./assests/6.png'); top: 10px; left: 0; }
+        .layer-7 { background-image: url('./assests/7.png'); top: 0px; left: 0; }
 
-        /* Content Section below the Parallax Hero to allow page scrolling */
+        /* Content Sections below the Parallax Hero */
         .content-section {
             position: relative;
             z-index: 20;
-            background-color: #0b111e; /* Same color as body background */
+            background-color: #0b111e;
             padding: 120px 20px;
             text-align: center;
         }
@@ -85,43 +75,119 @@
             line-height: 1.8;
             color: #8fa0ba;
         }
+
+        /* ==========================================================================
+            FIXED RESPONSIVE BREAKPOINTS (Mobile & Tablet Views 320px up to 1080px)
+           ========================================================================== */
+
+        @media (max-width: 1080px) {
+            .parallax-hero {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh !important;
+                background-color: #ffffff !important; 
+                overflow: hidden !important;
+            }
+
+            .parallax-layer {
+                top: auto !important;
+                left: 50% !important;
+                height: 100vh !important;
+                transform: translate(-50%, calc(var(--scroll, 0) * var(--speed-factor, 0px))) !important;
+                background-size: contain !important;
+                background-position: center bottom !important;
+            }
+
+            /* --- TABLET VIEW (521px to 1080px) ---
+               Uses Desktop Assets, but scales safely inside an aspect-ratio box */
+            @media (min-width: 521px) {
+                .parallax-layer {
+                    /* Matches standard landscape/desktop design proportion limits */
+                    aspect-ratio: 16 / 9 !important; 
+                    width: calc(100vh * (16 / 9)) !important;
+                    max-width: none !important;
+                }
+                /* Explicitly re-binding the desktop files to override global mobile changes */
+                .layer-1 { background-image: url('./assests/1.gif') !important; } 
+                .layer-2 { background-image: url('./assests/tab2.png') !important; top: 0 !important; }
+                .layer-3 { background-image: url('./assests/tab3.png') !important; top: 0 !important; }
+                .layer-4 { background-image: url('./assests/tab4.png') !important; top: 0 !important; }
+                .layer-5 { background-image: url('./assests/tab5.png') !important; top: 0 !important; }
+                .layer-6 { background-image: url('./assests/tab6.png') !important; top: 0 !important; }
+                .layer-7 { background-image: url('./assests/tab7.png') !important; top: 0 !important; }
+            }
+
+            /* --- MOBILE VIEW (320px to 520px) ---
+               Maintains the target mobile portrait asset configurations */
+            @media (max-width: 520px) {
+                .parallax-layer {
+                    width: 100% !important;
+                    height: auto !important;
+                    aspect-ratio: 412 / 914 !important;
+                }
+                .layer-1 { background-image: url('./assests/mob1.png'); } 
+                .layer-2 { background-image: url('./assests/mob2.png'); }
+                .layer-3 { background-image: url('./assests/mob3.png'); }
+                .layer-4 { background-image: url('./assests/mob4.png'); }
+                .layer-5 { background-image: url('./assests/mob5.png'); }
+                .layer-6 { background-image: url('./assests/mob6.png'); }
+                .layer-7 { background-image: url('./assests/mob7.png'); }
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-section { padding: 60px 20px; }
+            .content-section h2 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
     <div class="parallax-hero">
         <div class="parallax-layer layer-1" data-speed="0.05"></div>
-        <div class="parallax-layer layer-2" data-speed="0.15"></div>
-        <div class="parallax-layer layer-3" data-speed="0.30"></div>
-        <div class="parallax-layer layer-4" data-speed="0.45"></div>
-        <div class="parallax-layer layer-5" data-speed="0.55"></div>
-        <div class="parallax-layer layer-6" data-speed="0.70"></div>
-        <div class="parallax-layer layer-7" data-speed="0.75"></div>
+        <div class="parallax-layer layer-2" data-speed="0.12"></div>
+        <div class="parallax-layer layer-3" data-speed="0.22"></div>
+        <div class="parallax-layer layer-4" data-speed="0.35"></div>
+        <div class="parallax-layer layer-5" data-speed="0.48"></div>
+        <div class="parallax-layer layer-6" data-speed="0.55"></div>
+        <div class="parallax-layer layer-7" data-speed="0.62"></div>
     </div>
 
     <div class="content-section">
         <h2>Your Journey Begins</h2>
-        <p>Scroll back up and down to experience the 7-layer depth animation. Make sure your transparent layer graphics match the background color of this section for a perfect visual blend.</p>
+        <p>Scroll back up and down to experience the 7-layer depth animation.</p>
+    </div>
+    <div class="content-section">
+        <h2>Your Journey Begins</h2>
+        <p>Scroll back up and down to experience the 7-layer depth animation.</p>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const layers = document.querySelectorAll(".parallax-layer");
 
-            window.addEventListener("scroll", () => {
+            const handleScroll = () => {
                 const scrolled = window.pageYOffset;
+                const isMobileView = window.innerWidth <= 1080;
 
-                // requestAnimationFrame enforces silky-smooth performance mapping to monitor refresh rates
                 requestAnimationFrame(() => {
                     layers.forEach(layer => {
-                        const speed = layer.getAttribute("data-speed");
+                        let speed = parseFloat(layer.getAttribute("data-speed"));
                         
-                        // Dynamically update CSS variables assigned to each layer element
+                        if (isMobileView) {
+                            speed = speed * 0.15; 
+                        }
+
                         layer.style.setProperty("--scroll", scrolled);
                         layer.style.setProperty("--speed-factor", `${speed}px`);
                     });
                 });
-            });
+            };
+
+            window.addEventListener("scroll", handleScroll, { passive: true });
+            window.addEventListener("resize", handleScroll);
+            handleScroll();
         });
     </script>
 </body>
