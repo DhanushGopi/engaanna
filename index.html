@@ -107,33 +107,66 @@
             .layer-7 { background-image: url('./assests/mob7.png'); }
         }
 
-        /* --- BREAKPOINT 5: 921px to 1080px --- */
-        @media (max-width: 1080px) and (min-width: 921px) {
-            .parallax-layer { background-position: center bottom 10% !important; }
-        }
-
-        /* --- BREAKPOINT 4: 721px to 920px --- */
-        @media (max-width: 920px) and (min-width: 721px) {
-            .parallax-layer { background-position: center bottom 5% !important; }
-        }
-
-        /* --- BREAKPOINT 3: 521px to 720px --- */
-        @media (max-width: 720px) and (min-width: 521px) {
-            .parallax-layer { background-position: center bottom 2% !important; }
-        }
-
-        /* --- BREAKPOINT 2: 321px to 520px --- */
-        @media (max-width: 520px) and (min-width: 321px) {
-            .parallax-layer { background-position: center bottom 0% !important; }
-        }
-
-        /* --- BREAKPOINT 1: Up to 320px (Compact Mobile) --- */
-        @media (max-width: 320px) {
-            .parallax-layer { 
-                background-size: 100% 100% !important; /* Force fit extreme narrow screens */
-                background-position: center bottom !important; 
+        @media (max-width: 768px) {
+            .parallax-hero {
+                height: 100vh !important; /* Slightly increased to give the building height breathing room */
+                background-color: #ffffff !important; 
             }
-            .content-section h2 { font-size: 1.6rem; }
+
+            .parallax-layer {
+                top: -8%;
+                height: 116%;
+            }
+
+            /* --- FIX FOR BACKGROUND TEXT & LOGO LAYER --- */
+            .layer-1 { 
+                background-image: url('./assests/mob1.png'); 
+                /* Using 95% width ensures the text and top logo scale nicely without clipping off-screen */
+                background-size: 100% auto !important; 
+                background-position: center top 5% !important; 
+            } 
+
+            /* --- FIX FOR THE BUILDING BACKGROUND --- */
+            .layer-2 { 
+                background-image: url('./assests/mob2.png'); 
+                /* Contain keeps the architectural sketch fully visible inside the frame */
+                background-size: 100% !important; 
+                background-position: center top 50% !important; 
+            }
+
+            /* --- CHARACTER LAYERS (STAY EXTENDED TO EDGES) --- */
+            .layer-3 { background-image: url('./assests/mob3.png'); background-size: 100% !important; background-position: center top 20% !important; }
+            .layer-4 { background-image: url('./assests/mob4.png'); background-size: 100% !important; background-position: center top 40% !important; }
+            .layer-5 { background-image: url('./assests/mob5.png'); background-size: 100% !important; background-position: center top 60% !important; }
+            .layer-6 { background-image: url('./assests/mob6.png'); background-size: 100% !important; background-position: center top 80% !important; }
+            .layer-7 { background-image: url('./assests/mob7.png'); background-size: 100% !important; background-position: center bottom !important; }
+        }
+
+        /* Content Sections */
+        .content-section {
+            position: relative;
+            z-index: 20;
+            background-color: #0b111e;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #8fa0ba;
+        }
+
+        @media (max-width: 768px) {
+            .content-section { padding: 60px 20px; }
+            .content-section h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
